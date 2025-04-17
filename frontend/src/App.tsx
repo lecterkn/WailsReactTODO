@@ -1,28 +1,40 @@
-import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
-import './App.css';
-import {Greet} from "../wailsjs/go/main/App";
+import { useState } from "react";
+import "./App.css";
+import { Greet } from "../wailsjs/go/main/App";
 
 function App() {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
-    const [name, setName] = useState('');
-    const updateName = (e: any) => setName(e.target.value);
-    const updateResultText = (result: string) => setResultText(result);
+  const [resultText, setResultText] = useState(
+    "Please enter your name below 👇",
+  );
+  const [name, setName] = useState("");
+  const updateName = (e: any) => setName(e.target.value);
+  const updateResultText = (result: string) => setResultText(result);
 
-    function greet() {
-        Greet(name).then(updateResultText);
-    }
+  function greet() {
+    Greet(name).then(updateResultText);
+  }
 
-    return (
-        <div id="App">
-            <img src={logo} id="logo" alt="logo"/>
-            <div id="result" className="result">{resultText}</div>
-            <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
-                <button className="btn" onClick={greet}>Greet</button>
-            </div>
-        </div>
-    )
+  return (
+    <div className="min-h-screen bg-red-400">
+      <div id="result" className="result text-black">
+        {resultText}
+      </div>
+      <div className="bg-red-500 p-4">Hello</div>
+      <div id="input" className="input-box">
+        <input
+          id="name"
+          className="input bg-slate-100 text-black"
+          onChange={updateName}
+          autoComplete="off"
+          name="input"
+          type="text"
+        />
+        <button className="btn font-bold text-lg" onClick={greet}>
+          Greet
+        </button>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -1,19 +1,16 @@
 # README
 
-## About
+## 概要
 
-This is the official Wails React-TS template.
+WailsとReactを使用したTODOアプリ
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+- フロントエンドをReact(TypeScript)で作成
+- バックエンドにGoで作成
+- sqliteを使用してデータを永続化
 
-## Live Development
+## 進行状況
 
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
-
-## Building
-
-To build a redistributable, production mode package, use `wails build`.
+- [x] 環境構築 (wails+react+tailwind)
+- [] フロントエンド実装
+- [] バックエンド実装(sqlite)
+- [] Dockerで実行可能にする
