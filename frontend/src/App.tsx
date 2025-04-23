@@ -11,39 +11,4 @@ function App() {
   );
 }
 
-function OldApp() {
-  const [resultText, setResultText] = useState(
-    "Please enter your name below 👇",
-  );
-  const [name, setName] = useState("");
-  const updateName = (e: any) => setName(e.target.value);
-  const updateResultText = (result: string) => setResultText(result);
-
-  function greet() {
-    Greet(name).then(updateResultText);
-  }
-
-  return (
-    <div className="min-h-screen bg-red-400">
-      <div id="result" className="result text-black">
-        {resultText}
-      </div>
-      <div className="bg-red-500 p-4">Hello</div>
-      <div id="input" className="input-box">
-        <input
-          id="name"
-          className="input bg-slate-100 text-black"
-          onChange={updateName}
-          autoComplete="off"
-          name="input"
-          type="text"
-        />
-        <button className="btn font-bold text-lg" onClick={greet}>
-          Greet
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export default App;

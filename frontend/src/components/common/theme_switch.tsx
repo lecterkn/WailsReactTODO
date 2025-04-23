@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
+import {
+  GetSettings,
+  SetDarkTheme,
+} from "../../../wailsjs/go/usecase/SettingsUsecase";
 
-const toggleTheme = () => {
+const toggleTheme = (isDark: boolean) => {
   const html = document.documentElement;
-  html.classList.toggle("dark");
+  if (isDark) {
+    html.classList.add("dark");
+  } else {
+    html.classList.remove("dark");
+  }
 };
 
 const ThemeSwitch = () => {
   const [isDark, setIsDark] = useState(false);
+  const setTheme = (isDark: boolean) => {
+    SetDarkTheme(isDark).then(() => {
+      setIsDark(isDark);
+      toggleTheme(isDark);
+    });
+  };
 
   useEffect(() => {
-    const checkDark = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    checkDark(); // 初回チェック
-
-    // MutationObserverを使って動的な変化を監視する
-    const observer = new MutationObserver(checkDark);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
+    GetSettings().then((output) => {
+      setIsDark(output.isDarkTheme);
+      toggleTheme(output.isDarkTheme);
     });
-
-    return () => observer.disconnect();
   }, []);
   return (
     // <button
@@ -32,7 +36,7 @@ const ThemeSwitch = () => {
     //   {isDark ? "🌙" : "☀️"}
     // </button>
     <button
-      onClick={toggleTheme}
+      onClick={() => setTheme(!isDark)}
       className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-md shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-500"
     >
       {isDark ? "ダークテーマ" : "ライトテーマ"}
