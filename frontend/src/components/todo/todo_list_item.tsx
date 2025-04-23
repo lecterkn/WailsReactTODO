@@ -1,5 +1,13 @@
 import { useState } from "react";
+import {
+  GetTasks,
+  UncompleteTask,
+  CompleteTask,
+  UpdateTitle,
+  DeleteTask,
+} from "../../../wailsjs/go/usecase/TaskUsecase";
 import { TodoItem } from "../../models/todo";
+import { useTodoStore } from "../../stores/todo_store";
 
 interface Props {
   item: TodoItem;
@@ -9,11 +17,44 @@ interface Props {
 
 export const TodoListItem = ({ item, isEditing, setEditing }: Props) => {
   const [text, setText] = useState(item.title);
+  const setTodoList = useTodoStore((state) => state.setTodoItem);
+  const updateTodoList = () => {
+    GetTasks().then((outputList) => {
+      const todoList: TodoItem[] = [];
+      outputList.map((output) => {
+        todoList.push({
+          id: output.Id,
+          title: output.Title,
+          completed: output.Completed,
+        });
+      });
+      setTodoList(todoList);
+    });
+  };
   const setTitle = (title: string) => {
+    UpdateTitle(item.id, {
+      Title: text,
+    }).then(() => {
+      updateTodoList();
+    });
     setEditing(false);
   };
-  const setCompleted = (completed: boolean) => {};
-  const deleteItem = (itemId: string) => {};
+  const setCompleted = (completed: boolean) => {
+    if (completed) {
+      CompleteTask(item.id).then(() => {
+        updateTodoList();
+      });
+    } else {
+      UncompleteTask(item.id).then(() => {
+        updateTodoList();
+      });
+    }
+  };
+  const deleteItem = () => {
+    DeleteTask(item.id).then(() => {
+      updateTodoList();
+    });
+  };
   return isEditing ? (
     <div className="flex items-center justify-between">
       <input
@@ -43,7 +84,7 @@ export const TodoListItem = ({ item, isEditing, setEditing }: Props) => {
         <input
           type="checkbox"
           checked={item.completed}
-          onChange={() => setCompleted(true)}
+          onChange={() => setCompleted(!item.completed)}
           className="mr-2 leading-tight accent-blue-500"
         />
         <span
@@ -64,7 +105,7 @@ export const TodoListItem = ({ item, isEditing, setEditing }: Props) => {
           編集
         </button>
         <button
-          onClick={() => deleteItem(item.id)}
+          onClick={() => deleteItem()}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           削除

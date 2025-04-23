@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { TodoItem } from "../models/todo";
 import { useTodoStore } from "../stores/todo_store";
 import { TodoListItem } from "./todo/todo_list_item";
+import { GetTasks } from "../../wailsjs/go/usecase/TaskUsecase";
 
 const todo_list: TodoItem[] = [
   {
@@ -20,8 +21,21 @@ export const TodoList = () => {
   const todoList = useTodoStore((state) => state.todoItems);
   const setTodoList = useTodoStore((state) => state.setTodoItem);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const updateTodoList = () => {
+    GetTasks().then((outputList) => {
+      const todoList: TodoItem[] = [];
+      outputList.map((output) => {
+        todoList.push({
+          id: output.Id,
+          title: output.Title,
+          completed: output.Completed,
+        });
+      });
+      setTodoList(todoList);
+    });
+  };
   useEffect(() => {
-    setTodoList(todo_list);
+    updateTodoList();
   }, []);
   return (
     <ul>
