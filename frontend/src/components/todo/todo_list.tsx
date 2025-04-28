@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { TodoItem } from "../models/todo";
-import { useTodoStore } from "../stores/todo_store";
-import { TodoListItem } from "./todo/todo_list_item";
-import { GetTasks } from "../../wailsjs/go/usecase/TaskUsecase";
+import { TodoItem } from "../../models/todo";
+import { useTodoStore } from "../../stores/todo_store";
+import { TodoListItem } from "../todo/todo_list_item";
+import { GetTasks } from "../../../wailsjs/go/usecase/TaskUsecase";
 
 const todo_list: TodoItem[] = [
   {
@@ -43,7 +43,7 @@ export const TodoList = () => {
         <>
           <li
             key={item.id}
-            className="mb-4 p-4 rounded-md shadow-lg bg-gray-50 dark:bg-gray-700"
+            className="mb-4 p-4 rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700"
           >
             <TodoListItem
               item={item}

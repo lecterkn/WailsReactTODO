@@ -37,7 +37,7 @@ const ThemeSwitch = () => {
     // </button>
     <button
       onClick={() => setTheme(!isDark)}
-      className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-md shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-500"
+      className="px-4 py-2 bg-blue-600 hover:bg-gradient-to-r from-blue-500 to-blue-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-white rounded shadow focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-500 transition-colors duration-300"
     >
       {isDark ? "ダークテーマ" : "ライトテーマ"}
     </button>
