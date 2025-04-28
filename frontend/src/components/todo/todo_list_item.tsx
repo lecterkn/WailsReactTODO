@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  GetTasks,
   UncompleteTask,
   CompleteTask,
   UpdateTitle,
@@ -18,41 +17,29 @@ interface Props {
 export const TodoListItem = ({ item, isEditing, setEditing }: Props) => {
   const [text, setText] = useState(item.title);
   const setTodoList = useTodoStore((state) => state.setTodoItem);
-  const updateTodoList = () => {
-    GetTasks().then((outputList) => {
-      const todoList: TodoItem[] = [];
-      outputList.map((output) => {
-        todoList.push({
-          id: output.Id,
-          title: output.Title,
-          completed: output.Completed,
-        });
-      });
-      setTodoList(todoList);
-    });
-  };
+  const fetchTodoList = useTodoStore((state) => state.fetchTodoItems);
   const setTitle = (title: string) => {
     UpdateTitle(item.id, {
       Title: text,
     }).then(() => {
-      updateTodoList();
+      fetchTodoList();
     });
     setEditing(false);
   };
   const setCompleted = (completed: boolean) => {
     if (completed) {
       CompleteTask(item.id).then(() => {
-        updateTodoList();
+        fetchTodoList();
       });
     } else {
       UncompleteTask(item.id).then(() => {
-        updateTodoList();
+        fetchTodoList();
       });
     }
   };
   const deleteItem = () => {
     DeleteTask(item.id).then(() => {
-      updateTodoList();
+      fetchTodoList();
     });
   };
   return isEditing ? (

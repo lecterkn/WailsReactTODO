@@ -1,30 +1,16 @@
 import { useState } from "react";
-import { GetTasks, CreateTask } from "../../../wailsjs/go/usecase/TaskUsecase";
-import { TodoItem } from "../../models/todo";
+import { CreateTask } from "../../../wailsjs/go/usecase/TaskUsecase";
 import { useTodoStore } from "../../stores/todo_store";
 
 export const TodoAddPanel = () => {
   const [value, setValue] = useState("");
-  const setTodoList = useTodoStore((state) => state.setTodoItem);
-  const updateTodoList = () => {
-    GetTasks().then((outputList) => {
-      const todoList: TodoItem[] = [];
-      outputList.map((output) => {
-        todoList.push({
-          id: output.Id,
-          title: output.Title,
-          completed: output.Completed,
-        });
-      });
-      setTodoList(todoList);
-    });
-  };
+  const fetchTodoList = useTodoStore((state) => state.fetchTodoItems);
   const addTodo = () => {
     CreateTask({
       Title: value,
     }).then((e) => {
       setValue("");
-      updateTodoList();
+      fetchTodoList();
     });
   };
   return (
