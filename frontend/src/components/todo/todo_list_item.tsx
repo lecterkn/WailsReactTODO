@@ -60,7 +60,7 @@ export const TodoListItem = ({ item, isEditing, setEditing }: Props) => {
       </button>
       <button
         onClick={() => setEditing(false)}
-        className="ml-2 py-2 px-4 w-[180px] border border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500  dark:hover:bg-blue-500 text-gray-800 dark:text-white font-bold rounded focus:outline-none focus:shadow-outline transition-colors "
+        className="ml-2 py-2 px-4 w-[180px] border text-gray-600 border-gray-600 hover:text-gray-400 hover:border-gray-400 dark:border-gray-100 dark:text-gray-100 dark:hover:text-gray-400 dark:hover:border-gray-400 font-bold rounded focus:outline-none focus:shadow-outline transition-colors"
       >
         キャンセル
       </button>
