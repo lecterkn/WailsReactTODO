@@ -1,20 +1,6 @@
 import { useEffect, useState } from "react";
-import { TodoItem } from "../../models/todo";
 import { useTodoStore } from "../../stores/todo_store";
 import { TodoListItem } from "../todo/todo_list_item";
-
-const todo_list: TodoItem[] = [
-  {
-    id: "1",
-    title: "TODOアプリを作成",
-    completed: false,
-  },
-  {
-    id: "2",
-    title: "コーヒーを買う",
-    completed: true,
-  },
-];
 
 export const TodoList = () => {
   const todoList = useTodoStore((state) => state.todoItems);
