@@ -1,14 +1,17 @@
 package database
 
 import (
+	"fmt"
 	"os"
+	"path/filepath"
+	"runtime"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func GetSqlite() *sqlx.DB {
-	sqlite, err := sqlx.Open("sqlite3", getDatabaseName())
+	sqlite, err := sqlx.Open("sqlite3", getDatabasePath())
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,10 +42,45 @@ func migration(db *sqlx.DB) error {
 	return nil
 }
 
-func getDatabaseName() string {
-	db, ok := os.LookupEnv("TODOAPP_SQLITE_DB_NAME")
-	if !ok {
-		panic("\"TODOAPP_SQLITE_DB_NAME\" is not set")
+func getDatabasePath() string {
+	mode, ok := os.LookupEnv("TODOAPP_MODE")
+	if !ok || mode != "DEVELOPMENT" {
+		db, err := getProdDB()
+		if err != nil {
+			panic(err)
+		}
+		return db
 	}
-	return db
+	return getDevDB()
+}
+
+func getDevDB() string {
+	return "__todo.sqlite"
+}
+
+func getProdDB() (string, error) {
+	var dir string
+	var err error
+
+	if runtime.GOOS == "windows" {
+		dir = os.Getenv("APPDATA")
+		if dir == "" {
+			return "", fmt.Errorf("APPDATA環境変数が設定されていません")
+		}
+		dir = filepath.Join(dir, "todo_app")
+	} else {
+		home := os.Getenv("HOME")
+		if home == "" {
+			return "", fmt.Errorf("HOME環境変数が設定されていません")
+		}
+		dir = filepath.Join(home, ".config", "todo_app")
+	}
+
+	// ディレクトリを作成（存在する場合は何もしない）
+	if err = os.MkdirAll(dir, 0755); err != nil {
+		return "", fmt.Errorf("ディレクトリ作成失敗: %w", err)
+	}
+
+	dbPath := filepath.Join(dir, "__todo.sqlite")
+	return dbPath, nil
 }

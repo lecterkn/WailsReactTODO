@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { TodoItem } from "../models/todo";
-import { useTodoStore } from "../stores/todo_store";
-import { TodoListItem } from "./todo/todo_list_item";
-import { GetTasks } from "../../wailsjs/go/usecase/TaskUsecase";
+import { TodoItem } from "../../models/todo";
+import { useTodoStore } from "../../stores/todo_store";
+import { TodoListItem } from "../todo/todo_list_item";
 
 const todo_list: TodoItem[] = [
   {
@@ -19,23 +18,10 @@ const todo_list: TodoItem[] = [
 
 export const TodoList = () => {
   const todoList = useTodoStore((state) => state.todoItems);
-  const setTodoList = useTodoStore((state) => state.setTodoItem);
+  const fetchTodoList = useTodoStore((state) => state.fetchTodoItems);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const updateTodoList = () => {
-    GetTasks().then((outputList) => {
-      const todoList: TodoItem[] = [];
-      outputList.map((output) => {
-        todoList.push({
-          id: output.Id,
-          title: output.Title,
-          completed: output.Completed,
-        });
-      });
-      setTodoList(todoList);
-    });
-  };
   useEffect(() => {
-    updateTodoList();
+    fetchTodoList();
   }, []);
   return (
     <ul>
@@ -43,7 +29,7 @@ export const TodoList = () => {
         <>
           <li
             key={item.id}
-            className="mb-4 p-4 rounded-md shadow-lg bg-gray-50 dark:bg-gray-700"
+            className="mb-4 p-4 rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700"
           >
             <TodoListItem
               item={item}

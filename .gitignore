@@ -4,3 +4,4 @@ frontend/dist
 
 .env
 __todo.sqlite
+*/.DS_Store

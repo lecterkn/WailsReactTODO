@@ -9,5 +9,21 @@
   "author": {
     "name": "lecterkn",
     "email": "lecterkn@proton.me"
+  },
+  "platforms": {
+    "darwin/arm64": {
+      "arch": "arm64"
+    },
+    "windows/amd64": {
+      "arch": "amd64"
+    },
+    "linux/amd64": {
+      "arch": "amd64"
+    }
+  },
+  "build": {
+    "platform": ["darwin/arm64", "windows/amd64", "linux/amd64"],
+    "ldflags": "-s -w",
+    "clean": true
   }
 }
